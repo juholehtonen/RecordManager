@@ -47,7 +47,6 @@ use RecordManager\Base\Utils\MetadataUtils;
  * @link     https://github.com/KDK-Alli/RecordManager
  */
 class Ead3 extends \RecordManager\Finna\Record\Ead3
-
 {
     /**
      * Return fields to be indexed in Solr (an alternative to an XSL transformation)
