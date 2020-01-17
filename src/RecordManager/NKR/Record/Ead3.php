@@ -56,10 +56,29 @@ class Ead3 extends \RecordManager\Finna\Record\Ead3
     public function toSolrArray()
     {
         $data = parent::toSolrArray();
-        $doc = $this->doc;
+        // $doc = $this->doc;
 
         $data['_document_id'] = $this->getUnitId();
+
+        /* Check if the overall containing archive contains restricted content */
+        if ($this->doc->{'add-data'}->archive) {
+            $archiveAttr = $this->doc->{'add-data'}->archive->attributes();
+            $data['nr_status_str'] = (string)$archiveAttr->{'nr-status'};
+            if (!$data['nr_status_str']) {
+                $data['nr_status_str'] = 'non-empty string to get this into index';
+            }
+        }
+
+        /* Check if the current archive sub-unit conatins restricted elements */
+        if ($data['nr_status_str'] && strpos($data['nr_status_str'], 'non-empty') !== false) {
+            // TODO: Add per archive unit check for NR-elements
+            $data['_document_id'] .= '::10';
+            $data['display_restriction_id_str'] = '10';
+        } else {
+            $data['display_restriction_id_str'] = '00';
+        }
 
         return $data;
     }
 }
+?>
