@@ -78,21 +78,13 @@ class Ead3 extends \RecordManager\Finna\Record\Ead3
                     throw new \Exception('Failed to find $nrStatus, unable to infer NR status');
                 }
             }
-            // FIXME: Remove "if" here. Development helper
-            if ($nrStatus == 'FIXME_DEV' ) {
-                $data['nr_status_str'] = $nrStatus;
-                $data['_document_id'] .= '::10';
-                $data['display_restriction_id_str'] = '10';
-                $nodes = $this->doc->xpath('//[@relator]');
-                $data['nr_verification_str'] = $nodes;
-            } 
             if ($nrStatus == 'NR10' ) {
                 $data['_document_id'] .= '::10';
                 $data['display_restriction_id_str'] = '10';
             } else {
                 /* Check if the current archive sub-unit contains restricted elements */ 
-                $nodes = $this->doc->xpath('//[@displayRestrictionId]');
-                if ($nodes) {
+                // $nodes = $this->doc->xpath('//[@displayRestrictionId]');
+                if (isset($nodes) && $nodes) {
                     $this->logger->log(
                         'Ead3',
                         'Found restricted attributes inside non-restricted record!',
@@ -100,8 +92,17 @@ class Ead3 extends \RecordManager\Finna\Record\Ead3
                     );
                     throw new \Exception('Found restricted attributes inside non-restricted record!');
                 }
+                $data['nr_status_str'] = $nrStatus;
                 $data['display_restriction_id_str'] = '00';
             }
+            // FIXME: Remove whole "if" here. Development helper
+            if ($nrStatus == 'FIXME_DEV') {
+                $data['nr_status_str'] = $nrStatus;
+                $data['_document_id'] .= '::10';
+                $data['display_restriction_id_str'] = '10';
+                // $nodes = $this->doc->xpath('//[@relator]');
+                // $data['nr_verification_str'] = $nodes;
+            }             
         }
         return $data;
     }
