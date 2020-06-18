@@ -56,53 +56,19 @@ class Ead3 extends \RecordManager\Finna\Record\Ead3
     public function toSolrArray()
     {
         $data = parent::toSolrArray();
-        // $doc = $this->doc;
+
+        $harvest_mode = 'ahaa_open';
+        //$harvest_mode = 'ahaa_restricted';
 
         $data['_document_id'] = $this->getUnitId();
-        $nrStatus = '';
+        $data['harvest_mode_str'] = $harvest_mode;
 
-        /* Check if the overall containing archive contains restricted content */
-        if ($this->doc->{'add-data'}->archive) {
-            $archiveAttr = $this->doc->{'add-data'}->archive->attributes();
-            $nrStatus = (string)$archiveAttr->{'nr-status'};
-            if (!$nrStatus) {
-                // FIXME: Remove this: non-empty string to index the value for development
-                $nrStatus = 'FIXME_DEV';
-                // FIXME: Remove "if" here. If attribute missing we reject the record.
-                if ($nrStatus != 'FIXME_DEV' ) {
-                    $this->logger->log(
-                        'Ead3',
-                        'Failed to find $nrStatus, unable to infer NR status',
-                        Logger::FATAL
-                    );
-                    throw new \Exception('Failed to find $nrStatus, unable to infer NR status');
-                }
-            }
-            if ($nrStatus == 'NR10' ) {
-                $data['_document_id'] .= '::10';
-                $data['display_restriction_id_str'] = '10';
-            } else {
-                /* Check if the current archive sub-unit contains restricted elements */ 
-                // $nodes = $this->doc->xpath('//[@displayRestrictionId]');
-                if (isset($nodes) && $nodes) {
-                    $this->logger->log(
-                        'Ead3',
-                        'Found restricted attributes inside non-restricted record!',
-                        Logger::FATAL
-                    );
-                    throw new \Exception('Found restricted attributes inside non-restricted record!');
-                }
-                $data['nr_status_str'] = $nrStatus;
-                $data['display_restriction_id_str'] = '00';
-            }
-            // FIXME: Remove whole "if" here. Development helper
-            if ($nrStatus == 'FIXME_DEV') {
-                $data['nr_status_str'] = $nrStatus;
-                $data['_document_id'] .= '::10';
-                $data['display_restriction_id_str'] = '10';
-                // $nodes = $this->doc->xpath('//[@relator]');
-                // $data['nr_verification_str'] = $nodes;
-            }             
+        if ($harvest_mode === 'ahaa_open') {
+            $data['display_restriction_id_str'] = '00';
+        }
+        elseif ($harvest_mode === 'ahaa_restricted') {
+            $data['_document_id'] .= '::10';
+            $data['display_restriction_id_str'] = '10';
         }
         return $data;
     }
