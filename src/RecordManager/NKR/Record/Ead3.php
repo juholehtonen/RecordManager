@@ -56,20 +56,26 @@ class Ead3 extends \RecordManager\Finna\Record\Ead3
     public function toSolrArray()
     {
         $data = parent::toSolrArray();
-
-        $harvest_mode = 'ahaa_open';
-        //$harvest_mode = 'ahaa_restricted';
-
         $data['_document_id'] = $this->getUnitId();
-        $data['harvest_mode_str'] = $harvest_mode;
-
-        if ($harvest_mode === 'ahaa_open') {
+        
+        // TODO: move setting harvest mode to harvest process initialization
+        $harvest_mode = $this->getDriverParam('harvest_mode', 'unset');
+        if ($harvest_mode === 'unset') {
+            $this->logger->log(
+                'toSolrArray',
+                "Harvest mode not set in 'datasources.ini'",
+                Logger::FATAL
+                );
+                throw new \Exception('No harvest mode set in datasources.ini');
+        } elseif ($harvest_mode === 'ahaa_open') {
             $data['display_restriction_id_str'] = '00';
-        }
-        elseif ($harvest_mode === 'ahaa_restricted') {
+        } elseif ($harvest_mode === 'ahaa_restricted') {
             $data['_document_id'] .= '::10';
             $data['display_restriction_id_str'] = '10';
         }
+        
+        # TODO: maybe 'harvest_mode_str' isn't needed in index
+        $data['harvest_mode_str'] = $harvest_mode;               
         return $data;
     }
 }
