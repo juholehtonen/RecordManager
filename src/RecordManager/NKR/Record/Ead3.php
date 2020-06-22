@@ -65,8 +65,8 @@ class Ead3 extends \RecordManager\Finna\Record\Ead3
                 'toSolrArray',
                 "Harvest mode not set in 'datasources.ini'",
                 Logger::FATAL
-                );
-                throw new \Exception('No harvest mode set in datasources.ini');
+            );
+            throw new \Exception('No harvest mode set in datasources.ini');
         } elseif ($harvest_mode === 'ahaa_open') {
             $data['display_restriction_id_str'] = '00';
         } elseif ($harvest_mode === 'ahaa_restricted') {
@@ -74,7 +74,7 @@ class Ead3 extends \RecordManager\Finna\Record\Ead3
             $data['display_restriction_id_str'] = '10';
         }
         
-        # TODO: maybe 'harvest_mode_str' isn't needed in index
+        // TODO: maybe 'harvest_mode_str' isn't needed in index
         $data['harvest_mode_str'] = $harvest_mode;               
         return $data;
     }

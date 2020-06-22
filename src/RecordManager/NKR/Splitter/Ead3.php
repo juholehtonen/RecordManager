@@ -41,7 +41,7 @@ namespace RecordManager\NKR\Splitter;
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://github.com/KDK-Alli/RecordManager
-*/
+ */
 class Ead3 extends \RecordManager\Finna\Splitter\Ead3
 {
     protected $nrStatus = '';
