@@ -30,7 +30,6 @@
 namespace RecordManager\NKR\Record;
 
 use RecordManager\Base\Utils\Logger;
-use RecordManager\Base\Utils\MetadataUtils;
 
 /**
  * EAD 3 Record Class
@@ -75,8 +74,7 @@ class Ead3 extends \RecordManager\Finna\Record\Ead3
         }
         
         // TODO: maybe 'harvest_mode_str' isn't needed in index
-        $data['harvest_mode_str'] = $harvest_mode;               
+        $data['harvest_mode_str'] = $harvest_mode;
         return $data;
     }
 }
-?>
