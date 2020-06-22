@@ -57,7 +57,7 @@ class Ead3 extends \RecordManager\Finna\Splitter\Ead3
     {
         parent::setData($data);
 
-        $this->nrStatus 
+        $this->nrStatus
             = isset($this->doc->control->filedesc->publicationstmt->p)
                 ? (string)$this->doc->control->filedesc->publicationstmt->p
                 : '';
