@@ -2,7 +2,7 @@
 /**
  * EAD 3 Record Class
  *
- * PHP version 5
+ * PHP version 7
  *
  * Copyright (C) The National Library of Finland 2012-2019.
  *
@@ -52,9 +52,9 @@ class Ead3 extends \RecordManager\Finna\Record\Ead3
      *
      * @return array
      */
-    public function toSolrArray()
+    public function toSolrArray(\RecordManager\Base\Database\Database $db = null)
     {
-        $data = parent::toSolrArray();
+        $data = parent::toSolrArray($db);
         $data['_document_id'] = $this->getUnitId();
         
         // TODO: move setting harvest mode to harvest process initialization
