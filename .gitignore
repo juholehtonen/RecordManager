@@ -15,8 +15,16 @@ Thumbs.db
 .vscode
 
 # Local files
+install_composer.sh
+composer.phar
 conf/*.ini
 conf/*.lst
+ahaa_level_to_format.map
+building_ahaa.map
+institution_ahaa.map
+ead_level_to_format.map
+usage_rights.map
+language_codes.map
 .php_cs_cache
 .psalm_cache
 *.log
