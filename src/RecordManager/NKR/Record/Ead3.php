@@ -70,6 +70,8 @@ class Ead3 extends \RecordManager\Finna\Record\Ead3
             );
             throw new \Exception('No harvest mode set in datasources.ini');
         } elseif ($harvest_mode === 'ahaa_open') {
+            // NOTE: The value must be "00" because "0" gets mixed to PHP's "false" boolean value. This causes the
+            // whole key value pair to be ignored and not indexed at all, that is, key will be missing in Solr.
             $data['display_restriction_id_str'] = '00';
         } elseif ($harvest_mode === 'ahaa_restricted') {
             $data['_document_id'] .= '::10';
